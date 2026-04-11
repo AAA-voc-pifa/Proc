@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"strict": true,
+		"types": ["chrome-types"],
+		"target": "ES2024",
+		"moduleResolution": "bundler",
+	},
+	"include": ["extension/**/*.ts"]
+}

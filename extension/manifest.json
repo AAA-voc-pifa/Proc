@@ -1,0 +1,15 @@
+{
+	"manifest_version": 3,
+	"name": "Proc",
+	"version": "0.0.1",
+	"description": "给 anki（网页版）添加快捷键",
+	"permissions": ["storage"],
+	"host_permissions": ["https://ankiuser.net/study"],
+	"content_scripts": [
+		{
+			"matches": ["https://ankiuser.net/study"],
+			"js": ["content.js"],
+			"run_at": "document_idle"
+		}
+	]
+}
