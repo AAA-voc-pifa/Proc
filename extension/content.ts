@@ -10,7 +10,7 @@ document.addEventListener('keydown', evt => {
 			break
 		case 'e':
 		case 'E':
-			read_example_sentence(get_example_sentence())
+			read_example_sentence(get_example_sentence()).catch(console.error)
 			break
 	}
 })

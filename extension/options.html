@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Proc 设置</title>
+	<style>
+		:root {
+			color-scheme: light dark;
+			font-family: ui-sans-serif, system-ui, sans-serif;
+			line-height: 1.5;
+		}
+		body {
+			max-width: 32rem;
+			margin: 2rem auto;
+			padding: 0 1rem;
+		}
+		h1 {
+			font-size: 1.25rem;
+			font-weight: 600;
+			margin: 0 0 .5rem;
+		}
+		.hint {
+			color: color-mix(in srgb, CanvasText 65%, transparent);
+			margin: 0 0 1.5rem;
+			font-size: .9rem;
+		}
+		label {
+			display: grid;
+			gap: .35rem;
+			margin-bottom: 1rem;
+			font-size: .9rem;
+		}
+		input, select {
+			padding: .5rem .65rem;
+			border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+			border-radius: .4rem;
+			background: Canvas;
+			color: CanvasText;
+			font: inherit;
+		}
+		.row {
+			display: flex;
+			gap: .5rem;
+			align-items: center;
+			margin-bottom: 1rem;
+		}
+		button {
+			padding: .5rem 1rem;
+			border: 0;
+			border-radius: .4rem;
+			background: CanvasText;
+			color: Canvas;
+			font: inherit;
+			cursor: pointer;
+		}
+		button.secondary {
+			background: transparent;
+			color: CanvasText;
+			border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
+		}
+		#status {
+			margin-top: 1rem;
+			font-size: .9rem;
+			min-height: 1.5em;
+		}
+	</style>
+</head>
+<body>
+	<h1>Proc 设置</h1>
+	<p class="hint">
+		请先自行部署
+		<a href="https://edge-tts.fastapicloud.dev/docs" target="_blank" rel="noreferrer">edge-tts</a>
+		API，再填写下方配置。例句朗读会请求 <code>{url_prefix}/tts</code>。
+		须配置 voice 后才能使用。
+	</p>
+	<label>
+		API URL 前缀
+		<input id="url_prefix" type="url" placeholder="https://your-edge-tts.example.com" autocomplete="off" />
+	</label>
+	<label>
+		Password
+		<input id="password" type="password" autocomplete="off" />
+	</label>
+	<div class="row">
+		<button id="load_voices" class="secondary" type="button">加载英文音色</button>
+	</div>
+	<label>
+		Voice
+		<select id="voice">
+			<option value="">先加载音色列表</option>
+		</select>
+	</label>
+	<button id="save" type="button">保存</button>
+	<p id="status"></p>
+	<script src="options.js"></script>
+</body>
+</html>
