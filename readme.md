@@ -1,7 +1,6 @@
-# anki-web-TOEFL-helper
+# Proc
 
-anki-web-TOEFL-helper 是一个 chrome 扩展。
-为 Anki 网页版 - [托福绿宝书 deck](https://ankiweb.net/shared/info/657511105) 提供额外功能:
+Proc 是一个 chrome 扩展，为 Anki 网页版 - [托福绿宝书 deck](https://ankiweb.net/shared/info/657511105) 提供额外功能:
 
 + 读单词
 + 读例句
