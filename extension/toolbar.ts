@@ -125,11 +125,11 @@ function ensure_styles() {
 			bottom: 0;
 			z-index: 2147483646;
 			display: flex;
-			border-top: 1px solid #ccc;
-			border-left: 1px solid #ccc;
-			background: #f3f3f3;
+			border-top: 1px solid #333;
+			border-left: 1px solid #333;
+			background: #111;
 			font: 13px/1.2 system-ui, sans-serif;
-			color: #222;
+			color: #fff;
 			user-select: none;
 		}
 
@@ -141,9 +141,9 @@ function ensure_styles() {
 			margin: 0;
 			padding: 8px 10px;
 			border: 0;
-			border-right: 1px solid #ccc;
+			border-right: 1px solid #333;
 			border-radius: 0;
-			background: #f3f3f3;
+			background: #111;
 			color: inherit;
 			font: inherit;
 			cursor: pointer;
@@ -154,15 +154,15 @@ function ensure_styles() {
 		}
 
 		.proc-toolbar__btn:hover:not(:disabled) {
-			background: #e8e8e8;
+			background: #222;
 		}
 
 		.proc-toolbar__btn:active:not(:disabled) {
-			background: #ddd;
+			background: #2a2a2a;
 		}
 
 		.proc-toolbar__btn:disabled {
-			color: #999;
+			color: #777;
 			cursor: not-allowed;
 		}
 
@@ -172,13 +172,13 @@ function ensure_styles() {
 			border: 0;
 			border-radius: 0;
 			background: transparent;
-			color: #777;
+			color: #aaa;
 			font: 11px/1 ui-monospace, Menlo, monospace;
 			box-shadow: none;
 		}
 
 		.proc-toolbar__btn:disabled .proc-toolbar__kbd {
-			color: #aaa;
+			color: #555;
 		}
 	`
 	document.documentElement.appendChild(style)
