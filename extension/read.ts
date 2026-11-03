@@ -1,4 +1,4 @@
-import { get_config } from './config'
+import { get_tts_config } from './config'
 import { notify } from './notify'
 
 let current_audio: HTMLAudioElement | null = null
@@ -10,9 +10,11 @@ async function read_example_sentence(sentence: string | null) {
 		return
 	}
 
-	const config = await get_config()
+	const config = await get_tts_config()
 	if (!config) {
-		notify('请先配置 url_prefix、password 和 voice（点击打开选项）')
+		notify('请先配置 edge-tts 的 url_prefix、password 和 voice（点击打开选项）', {
+			open_options: true,
+		})
 		return
 	}
 

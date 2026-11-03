@@ -15,16 +15,24 @@
 		body {
 			max-width: 32rem;
 			margin: 2rem auto;
-			padding: 0 1rem;
+			padding: 0 1rem 3rem;
 		}
 		h1 {
 			font-size: 1.25rem;
 			font-weight: 600;
-			margin: 0 0 .5rem;
+			margin: 0 0 1.5rem;
+		}
+		section {
+			margin-bottom: 2rem;
+		}
+		h2 {
+			font-size: 1rem;
+			font-weight: 600;
+			margin: 0 0 .35rem;
 		}
 		.hint {
 			color: color-mix(in srgb, CanvasText 65%, transparent);
-			margin: 0 0 1.5rem;
+			margin: 0 0 1rem;
 			font-size: .9rem;
 		}
 		label {
@@ -74,7 +82,7 @@
 			color: CanvasText;
 			border: 1px solid var(--border);
 		}
-		#status {
+		.status {
 			margin-top: 1rem;
 			font-size: .9rem;
 			min-height: 1.5em;
@@ -83,45 +91,73 @@
 </head>
 <body>
 	<h1>Proc 设置</h1>
-	<p class="hint">
-		请先自行部署
-		<a href="https://github.com/AAA-voc-pifa/edge-tts-server" target="_blank" rel="noreferrer">edge-tts-server</a>
-	</p>
-	<label>
-		API URL 前缀
-		<input id="url_prefix" type="url" placeholder="https://your-edge-tts.example.com" autocomplete="off" />
-	</label>
-	<label>
-		Password
-		<input id="password" type="password" autocomplete="off" />
-	</label>
-	<div class="filters">
+
+	<section>
+		<h2>edge-tts-server</h2>
+		<p class="hint">
+			自行部署
+			<a href="https://github.com/AAA-voc-pifa/edge-tts-server" target="_blank" rel="noreferrer">edge-tts-server</a>
+			后填写，用于读例句。
+		</p>
 		<label>
-			Locale
-			<select id="filter_locale">
-				<option value="">全部</option>
-			</select>
+			API URL 前缀
+			<input id="tts_url_prefix" type="url" placeholder="https://your-edge-tts.example.com" autocomplete="off" />
 		</label>
 		<label>
-			性别
-			<select id="filter_gender">
-				<option value="">全部</option>
-				<option value="Female">女</option>
-				<option value="Male">男</option>
+			Password
+			<input id="tts_password" type="password" autocomplete="off" />
+		</label>
+		<div class="filters">
+			<label>
+				Locale
+				<select id="filter_locale">
+					<option value="">全部</option>
+				</select>
+			</label>
+			<label>
+				性别
+				<select id="filter_gender">
+					<option value="">全部</option>
+					<option value="Female">女</option>
+					<option value="Male">男</option>
+				</select>
+			</label>
+		</div>
+		<label>
+			Voice
+			<select id="voice">
+				<option value="">填写上方配置后自动加载</option>
 			</select>
 		</label>
-	</div>
-	<label>
-		Voice
-		<select id="voice">
-			<option value="">填写上方配置后自动加载</option>
-		</select>
-	</label>
-	<div class="actions">
-		<button id="save" type="button">保存</button>
-		<button id="clear" class="secondary" type="button">清空设置</button>
-	</div>
-	<p id="status"></p>
+		<div class="actions">
+			<button id="tts_save" type="button">保存</button>
+			<button id="tts_clear" class="secondary" type="button">清空设置</button>
+		</div>
+		<p id="tts_status" class="status"></p>
+	</section>
+
+	<section>
+		<h2>voc-api</h2>
+		<p class="hint">
+			自行部署
+			<a href="https://github.com/AAA-voc-pifa/voc-api" target="_blank" rel="noreferrer">voc-api</a>
+			后填写，用于单词本。
+		</p>
+		<label>
+			API URL 前缀
+			<input id="voc_url_prefix" type="url" placeholder="https://your-voc-api.example.com" autocomplete="off" />
+		</label>
+		<label>
+			Authentication
+			<input id="voc_authentication" type="password" autocomplete="off" />
+		</label>
+		<div class="actions">
+			<button id="voc_save" type="button">保存</button>
+			<button id="voc_clear" class="secondary" type="button">清空设置</button>
+		</div>
+		<p id="voc_status" class="status"></p>
+	</section>
+
 	<script src="options.js"></script>
 </body>
 </html>

@@ -1,4 +1,9 @@
-import { clear_config, set_config } from './config'
+import {
+	clear_tts_config,
+	clear_voc_config,
+	set_tts_config,
+	set_voc_config,
+} from './config'
 
 type ApiVoice = {
 	ShortName: string
@@ -8,14 +13,20 @@ type ApiVoice = {
 	Gender: string
 }
 
-const url_input = document.getElementById('url_prefix') as HTMLInputElement
-const password_input = document.getElementById('password') as HTMLInputElement
+const tts_url_input = document.getElementById('tts_url_prefix') as HTMLInputElement
+const tts_password_input = document.getElementById('tts_password') as HTMLInputElement
 const filter_locale = document.getElementById('filter_locale') as HTMLSelectElement
 const filter_gender = document.getElementById('filter_gender') as HTMLSelectElement
 const voice_select = document.getElementById('voice') as HTMLSelectElement
-const save_btn = document.getElementById('save') as HTMLButtonElement
-const clear_btn = document.getElementById('clear') as HTMLButtonElement
-const status = document.getElementById('status') as HTMLParagraphElement
+const tts_save_btn = document.getElementById('tts_save') as HTMLButtonElement
+const tts_clear_btn = document.getElementById('tts_clear') as HTMLButtonElement
+const tts_status = document.getElementById('tts_status') as HTMLParagraphElement
+
+const voc_url_input = document.getElementById('voc_url_prefix') as HTMLInputElement
+const voc_auth_input = document.getElementById('voc_authentication') as HTMLInputElement
+const voc_save_btn = document.getElementById('voc_save') as HTMLButtonElement
+const voc_clear_btn = document.getElementById('voc_clear') as HTMLButtonElement
+const voc_status = document.getElementById('voc_status') as HTMLParagraphElement
 
 let all_voices: ApiVoice[] = []
 let load_seq = 0
@@ -25,9 +36,9 @@ function normalize_prefix(raw: string) {
 	return raw.trim().replace(/\/+$/, '')
 }
 
-function reset_form() {
-	url_input.value = ''
-	password_input.value = ''
+function reset_tts_form() {
+	tts_url_input.value = ''
+	tts_password_input.value = ''
 	filter_locale.value = ''
 	filter_gender.value = ''
 	all_voices = []
@@ -102,8 +113,8 @@ async function fetch_english_voices(url_prefix: string, password: string) {
 }
 
 async function reload_voices(preferred = '') {
-	const url_prefix = url_input.value.trim()
-	const password = password_input.value
+	const url_prefix = tts_url_input.value.trim()
+	const password = tts_password_input.value
 	const seq = ++load_seq
 
 	if (!url_prefix || !password) {
@@ -116,11 +127,11 @@ async function reload_voices(preferred = '') {
 	try {
 		new URL(url_prefix)
 	} catch {
-		status.textContent = 'url_prefix 不是合法 URL'
+		tts_status.textContent = 'url_prefix 不是合法 URL'
 		return
 	}
 
-	status.textContent = '加载音色中…'
+	tts_status.textContent = '加载音色中…'
 	try {
 		const voices = await fetch_english_voices(url_prefix, password)
 		if (seq !== load_seq)
@@ -128,14 +139,14 @@ async function reload_voices(preferred = '') {
 		all_voices = voices
 		fill_locale_filter(voices)
 		render_voice_options(preferred)
-		status.textContent = `已加载 ${voices.length} 个英文音色`
+		tts_status.textContent = `已加载 ${voices.length} 个英文音色`
 	} catch (err) {
 		if (seq !== load_seq)
 			return
 		all_voices = []
 		fill_locale_filter([])
 		render_voice_options(preferred)
-		status.textContent = err instanceof Error ? err.message : String(err)
+		tts_status.textContent = err instanceof Error ? err.message : String(err)
 	}
 }
 
@@ -146,34 +157,59 @@ function schedule_reload() {
 	}, 400)
 }
 
-url_input.addEventListener('input', schedule_reload)
-password_input.addEventListener('input', schedule_reload)
+tts_url_input.addEventListener('input', schedule_reload)
+tts_password_input.addEventListener('input', schedule_reload)
 filter_locale.addEventListener('change', () => render_voice_options())
 filter_gender.addEventListener('change', () => render_voice_options())
 
-save_btn.addEventListener('click', async () => {
-	const url_prefix = url_input.value.trim()
-	const password = password_input.value
+tts_save_btn.addEventListener('click', async () => {
+	const url_prefix = tts_url_input.value.trim()
+	const password = tts_password_input.value
 	const voice = voice_select.value
 	if (!url_prefix || !password || !voice) {
-		status.textContent = '请填写 url_prefix、password，并选择 voice'
+		tts_status.textContent = '请填写 url_prefix、password，并选择 voice'
 		return
 	}
 	try {
 		new URL(url_prefix)
 	} catch {
-		status.textContent = 'url_prefix 不是合法 URL'
+		tts_status.textContent = 'url_prefix 不是合法 URL'
 		return
 	}
 
-	await set_config({ url_prefix, password, voice })
-	status.textContent = '已保存'
+	await set_tts_config({ url_prefix, password, voice })
+	tts_status.textContent = '已保存'
 })
 
-clear_btn.addEventListener('click', async () => {
-	await clear_config()
-	reset_form()
-	status.textContent = '已清空设置'
+tts_clear_btn.addEventListener('click', async () => {
+	await clear_tts_config()
+	reset_tts_form()
+	tts_status.textContent = '已清空设置'
+})
+
+voc_save_btn.addEventListener('click', async () => {
+	const url_prefix = voc_url_input.value.trim()
+	const authentication = voc_auth_input.value
+	if (!url_prefix || !authentication) {
+		voc_status.textContent = '请填写 url_prefix 和 authentication'
+		return
+	}
+	try {
+		new URL(url_prefix)
+	} catch {
+		voc_status.textContent = 'url_prefix 不是合法 URL'
+		return
+	}
+
+	await set_voc_config({ url_prefix, authentication })
+	voc_status.textContent = '已保存'
+})
+
+voc_clear_btn.addEventListener('click', async () => {
+	await clear_voc_config()
+	voc_url_input.value = ''
+	voc_auth_input.value = ''
+	voc_status.textContent = '已清空设置'
 })
 
 async function load() {
@@ -181,11 +217,17 @@ async function load() {
 		'url_prefix',
 		'password',
 		'voice',
+		'voc_url_prefix',
+		'voc_authentication',
 	])
 	if (typeof saved.url_prefix === 'string')
-		url_input.value = saved.url_prefix
+		tts_url_input.value = saved.url_prefix
 	if (typeof saved.password === 'string')
-		password_input.value = saved.password
+		tts_password_input.value = saved.password
+	if (typeof saved.voc_url_prefix === 'string')
+		voc_url_input.value = saved.voc_url_prefix
+	if (typeof saved.voc_authentication === 'string')
+		voc_auth_input.value = saved.voc_authentication
 
 	const selected_voice = typeof saved.voice === 'string' ? saved.voice : ''
 	await reload_voices(selected_voice)
