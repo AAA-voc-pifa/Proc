@@ -9,6 +9,8 @@
 			color-scheme: light dark;
 			font-family: ui-sans-serif, system-ui, sans-serif;
 			line-height: 1.5;
+			--border: color-mix(in srgb, CanvasText 22%, transparent);
+			--border-focus: color-mix(in srgb, CanvasText 55%, transparent);
 		}
 		body {
 			max-width: 32rem;
@@ -31,19 +33,27 @@
 			margin-bottom: 1rem;
 			font-size: .9rem;
 		}
+		.filters {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 1rem;
+			margin-bottom: 1rem;
+		}
+		.filters label {
+			margin-bottom: 0;
+		}
 		input, select {
 			padding: .5rem .65rem;
-			border: 1px solid color-mix(in srgb, CanvasText 20%, transparent);
+			border: 1px solid var(--border);
 			border-radius: .4rem;
 			background: Canvas;
 			color: CanvasText;
 			font: inherit;
+			outline: none;
 		}
-		.row {
-			display: flex;
-			gap: .5rem;
-			align-items: center;
-			margin-bottom: 1rem;
+		input:focus, select:focus {
+			border-color: var(--border-focus);
+			box-shadow: 0 0 0 1px var(--border-focus);
 		}
 		button {
 			padding: .5rem 1rem;
@@ -53,11 +63,6 @@
 			color: Canvas;
 			font: inherit;
 			cursor: pointer;
-		}
-		button.secondary {
-			background: transparent;
-			color: CanvasText;
-			border: 1px solid color-mix(in srgb, CanvasText 25%, transparent);
 		}
 		#status {
 			margin-top: 1rem;
@@ -70,7 +75,7 @@
 	<h1>Proc 设置</h1>
 	<p class="hint">
 		请先自行部署
-		<a href="https://edge-tts.fastapicloud.dev/docs" target="_blank" rel="noreferrer">edge-tts</a>
+		<a href="https://github.com/AAA-voc-pifa/edge-tts-server" target="_blank" rel="noreferrer">edge-tts</a>
 		API，再填写下方配置。例句朗读会请求 <code>{url_prefix}/tts</code>。
 		须配置 voice 后才能使用。
 	</p>
@@ -82,13 +87,26 @@
 		Password
 		<input id="password" type="password" autocomplete="off" />
 	</label>
-	<div class="row">
-		<button id="load_voices" class="secondary" type="button">加载英文音色</button>
+	<div class="filters">
+		<label>
+			Locale
+			<select id="filter_locale">
+				<option value="">全部</option>
+			</select>
+		</label>
+		<label>
+			性别
+			<select id="filter_gender">
+				<option value="">全部</option>
+				<option value="Female">女</option>
+				<option value="Male">男</option>
+			</select>
+		</label>
 	</div>
 	<label>
 		Voice
 		<select id="voice">
-			<option value="">先加载音色列表</option>
+			<option value="">填写上方配置后自动加载</option>
 		</select>
 	</label>
 	<button id="save" type="button">保存</button>
