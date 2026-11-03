@@ -1,3 +1,5 @@
+import { open_options_page } from './open-options'
+
 let toast_el: HTMLDivElement | null = null
 let hide_timer = 0
 
@@ -21,7 +23,7 @@ function notify(message: string) {
 			cursor: 'pointer',
 		} as CSSStyleDeclaration)
 		toast_el.addEventListener('click', () => {
-			chrome.runtime.openOptionsPage()
+			open_options_page()
 			hide()
 		})
 		document.documentElement.appendChild(toast_el)

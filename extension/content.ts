@@ -1,5 +1,8 @@
 import { observe_dom_change } from './dom-change'
 import { read_example_sentence } from './read'
+import { mount_settings_button } from './settings-button'
+
+mount_settings_button()
 
 const { play_audio, get_example_sentence } = observe_dom_change()
 document.addEventListener('keydown', evt => {

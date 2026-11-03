@@ -10,6 +10,7 @@ fs.cpSync('extension/options.html', 'dist/options.html')
 
 build({
 	entryPoints: [
+		'extension/background.ts',
 		'extension/content.ts',
 		'extension/options.ts',
 	],

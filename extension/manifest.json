@@ -5,6 +5,9 @@
 	"description": "给 anki web - 托福词汇 添加快捷键",
 	"permissions": ["storage"],
 	"host_permissions": ["https://ankiuser.net/study"],
+	"background": {
+		"service_worker": "background.js"
+	},
 	"options_ui": {
 		"page": "options.html",
 		"open_in_tab": true

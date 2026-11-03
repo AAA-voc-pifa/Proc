@@ -1,4 +1,4 @@
-import { set_config } from './config'
+import { clear_config, set_config } from './config'
 
 type ApiVoice = {
 	ShortName: string
@@ -14,6 +14,7 @@ const filter_locale = document.getElementById('filter_locale') as HTMLSelectElem
 const filter_gender = document.getElementById('filter_gender') as HTMLSelectElement
 const voice_select = document.getElementById('voice') as HTMLSelectElement
 const save_btn = document.getElementById('save') as HTMLButtonElement
+const clear_btn = document.getElementById('clear') as HTMLButtonElement
 const status = document.getElementById('status') as HTMLParagraphElement
 
 let all_voices: ApiVoice[] = []
@@ -22,6 +23,16 @@ let debounce_timer = 0
 
 function normalize_prefix(raw: string) {
 	return raw.trim().replace(/\/+$/, '')
+}
+
+function reset_form() {
+	url_input.value = ''
+	password_input.value = ''
+	filter_locale.value = ''
+	filter_gender.value = ''
+	all_voices = []
+	fill_locale_filter([])
+	render_voice_options()
 }
 
 function fill_locale_filter(voices: ApiVoice[]) {
@@ -157,6 +168,12 @@ save_btn.addEventListener('click', async () => {
 
 	await set_config({ url_prefix, password, voice })
 	status.textContent = '已保存'
+})
+
+clear_btn.addEventListener('click', async () => {
+	await clear_config()
+	reset_form()
+	status.textContent = '已清空设置'
 })
 
 async function load() {

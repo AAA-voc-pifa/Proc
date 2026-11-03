@@ -55,6 +55,11 @@
 			border-color: var(--border-focus);
 			box-shadow: 0 0 0 1px var(--border-focus);
 		}
+		.actions {
+			display: flex;
+			gap: .5rem;
+			flex-wrap: wrap;
+		}
 		button {
 			padding: .5rem 1rem;
 			border: 0;
@@ -63,6 +68,11 @@
 			color: Canvas;
 			font: inherit;
 			cursor: pointer;
+		}
+		button.secondary {
+			background: transparent;
+			color: CanvasText;
+			border: 1px solid var(--border);
 		}
 		#status {
 			margin-top: 1rem;
@@ -107,7 +117,10 @@
 			<option value="">填写上方配置后自动加载</option>
 		</select>
 	</label>
-	<button id="save" type="button">保存</button>
+	<div class="actions">
+		<button id="save" type="button">保存</button>
+		<button id="clear" class="secondary" type="button">清空设置</button>
+	</div>
 	<p id="status"></p>
 	<script src="options.js"></script>
 </body>

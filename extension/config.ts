@@ -32,3 +32,8 @@ async function set_config(config: Config) {
 		voice: config.voice.trim(),
 	})
 }
+
+export
+async function clear_config() {
+	await chrome.storage.local.remove(['url_prefix', 'password', 'voice'])
+}
