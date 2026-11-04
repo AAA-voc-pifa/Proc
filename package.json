@@ -1,13 +1,11 @@
 {
-  "scripts": {},
   "license": "UNLICENSED",
   "type": "module",
+  "scripts": {
+    "build": "node ./build.js"
+  },
   "devDependencies": {
     "chrome-types": "^0.1.425",
     "esbuild": "^0.28.0"
-  },
-  "dependencies": {
-    "abitfine": "^0.0.4",
-    "goober": "^2.1.18"
   }
 }

@@ -2,10 +2,14 @@ function normalize_prefix(raw: string) {
 	return raw.trim().replace(/\/+$/, '')
 }
 
+export const DEFAULT_TTS_RATE = '-20%'
+export const TTS_RATE_PATTERN = /^[+-]\d+%$/
+
 export type TtsConfig = {
 	url_prefix: string
 	password: string
 	voice: string
+	rate: string
 }
 
 export type VocConfig = {
@@ -15,10 +19,11 @@ export type VocConfig = {
 
 export
 async function get_tts_config(): Promise<TtsConfig | null> {
-	const { url_prefix, password, voice } = await chrome.storage.local.get([
+	const { url_prefix, password, voice, rate } = await chrome.storage.local.get([
 		'url_prefix',
 		'password',
 		'voice',
+		'rate',
 	])
 	if (typeof url_prefix !== 'string' || !url_prefix.trim())
 		return null
@@ -26,10 +31,12 @@ async function get_tts_config(): Promise<TtsConfig | null> {
 		return null
 	if (typeof voice !== 'string' || !voice.trim())
 		return null
+	const normalized_rate = typeof rate === 'string' ? rate.trim() : ''
 	return {
 		url_prefix: normalize_prefix(url_prefix),
 		password,
 		voice: voice.trim(),
+		rate: TTS_RATE_PATTERN.test(normalized_rate) ? normalized_rate : DEFAULT_TTS_RATE,
 	}
 }
 
@@ -39,12 +46,13 @@ async function set_tts_config(config: TtsConfig) {
 		url_prefix: normalize_prefix(config.url_prefix),
 		password: config.password,
 		voice: config.voice.trim(),
+		rate: config.rate.trim(),
 	})
 }
 
 export
 async function clear_tts_config() {
-	await chrome.storage.local.remove(['url_prefix', 'password', 'voice'])
+	await chrome.storage.local.remove(['url_prefix', 'password', 'voice', 'rate'])
 }
 
 export

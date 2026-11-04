@@ -1,4 +1,6 @@
 import {
+	DEFAULT_TTS_RATE,
+	TTS_RATE_PATTERN,
 	clear_tts_config,
 	clear_voc_config,
 	set_tts_config,
@@ -18,6 +20,7 @@ const tts_password_input = document.getElementById('tts_password') as HTMLInputE
 const filter_locale = document.getElementById('filter_locale') as HTMLSelectElement
 const filter_gender = document.getElementById('filter_gender') as HTMLSelectElement
 const voice_select = document.getElementById('voice') as HTMLSelectElement
+const tts_rate_input = document.getElementById('tts_rate') as HTMLInputElement
 const tts_save_btn = document.getElementById('tts_save') as HTMLButtonElement
 const tts_clear_btn = document.getElementById('tts_clear') as HTMLButtonElement
 const tts_status = document.getElementById('tts_status') as HTMLParagraphElement
@@ -39,6 +42,7 @@ function normalize_prefix(raw: string) {
 function reset_tts_form() {
 	tts_url_input.value = ''
 	tts_password_input.value = ''
+	tts_rate_input.value = DEFAULT_TTS_RATE
 	filter_locale.value = ''
 	filter_gender.value = ''
 	all_voices = []
@@ -166,8 +170,13 @@ tts_save_btn.addEventListener('click', async () => {
 	const url_prefix = tts_url_input.value.trim()
 	const password = tts_password_input.value
 	const voice = voice_select.value
+	const rate = tts_rate_input.value.trim() || DEFAULT_TTS_RATE
 	if (!url_prefix || !password || !voice) {
 		tts_status.textContent = '请填写 url_prefix、password，并选择 voice'
+		return
+	}
+	if (!TTS_RATE_PATTERN.test(rate)) {
+		tts_status.textContent = 'rate 格式应为 +0%、+50%、-20% 这类'
 		return
 	}
 	try {
@@ -177,7 +186,8 @@ tts_save_btn.addEventListener('click', async () => {
 		return
 	}
 
-	await set_tts_config({ url_prefix, password, voice })
+	await set_tts_config({ url_prefix, password, voice, rate })
+	tts_rate_input.value = rate
 	tts_status.textContent = '已保存'
 })
 
@@ -217,6 +227,7 @@ async function load() {
 		'url_prefix',
 		'password',
 		'voice',
+		'rate',
 		'voc_url_prefix',
 		'voc_authentication',
 	])
@@ -224,6 +235,10 @@ async function load() {
 		tts_url_input.value = saved.url_prefix
 	if (typeof saved.password === 'string')
 		tts_password_input.value = saved.password
+	tts_rate_input.value =
+		typeof saved.rate === 'string' && TTS_RATE_PATTERN.test(saved.rate.trim())
+			? saved.rate.trim()
+			: DEFAULT_TTS_RATE
 	if (typeof saved.voc_url_prefix === 'string')
 		voc_url_input.value = saved.voc_url_prefix
 	if (typeof saved.voc_authentication === 'string')

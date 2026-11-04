@@ -1,10 +1,15 @@
 import { get_tts_config } from './config'
 import { notify } from './notify'
 
+const NORMAL_RATE = '+0%'
+
 let current_audio: HTMLAudioElement | null = null
 
 export
-async function read_example_sentence(sentence: string | null) {
+async function read_example_sentence(
+	sentence: string | null,
+	options?: { use_configured_rate?: boolean },
+) {
 	if (!sentence) {
 		notify('当前卡片没有例句')
 		return
@@ -20,9 +25,11 @@ async function read_example_sentence(sentence: string | null) {
 
 	stop_current()
 
+	const rate = options?.use_configured_rate ? config.rate : NORMAL_RATE
 	const url = `${config.url_prefix}/tts?${new URLSearchParams({
 		text: sentence,
 		voice: config.voice,
+		rate,
 	})}`
 
 	const res = await fetch(url, {

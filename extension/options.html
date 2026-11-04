@@ -35,6 +35,10 @@
 			margin: 0 0 1rem;
 			font-size: .9rem;
 		}
+		.field-hint {
+			color: color-mix(in srgb, CanvasText 65%, transparent);
+			font-size: .85rem;
+		}
 		label {
 			display: grid;
 			gap: .35rem;
@@ -128,6 +132,11 @@
 			<select id="voice">
 				<option value="">填写上方配置后自动加载</option>
 			</select>
+		</label>
+		<label>
+			Rate
+			<input id="tts_rate" type="text" value="-20%" placeholder="-20%" autocomplete="off" />
+			<span class="field-hint">格式如 +0%、-20%。点「例句」或按 e 用 +0%；Shift+E 用此处语速。</span>
 		</label>
 		<div class="actions">
 			<button id="tts_save" type="button">保存</button>

@@ -8,8 +8,8 @@ let api: ReturnType<typeof observe_dom_change>
 
 const toolbar = mount_toolbar({
 	play_audio: () => api.play_audio(),
-	read_example: () => {
-		read_example_sentence(api.get_example_sentence()).catch(console.error)
+	read_example: options => {
+		read_example_sentence(api.get_example_sentence(), options).catch(console.error)
 	},
 	add_word: () => {
 		add_word(api.get_word())

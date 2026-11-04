@@ -17,7 +17,7 @@ const STYLE_ID = 'proc-toolbar-style'
 export
 function mount_toolbar(actions: {
 	play_audio: () => void
-	read_example: () => void
+	read_example: (options?: { use_configured_rate?: boolean }) => void
 	add_word: () => void
 }): Toolbar {
 	ensure_styles()
@@ -38,8 +38,8 @@ function mount_toolbar(actions: {
 		{
 			key: 'e',
 			label: '例句',
-			title: '读例句',
-			run: actions.read_example,
+			title: '读例句（Shift+E 使用配置语速）',
+			run: () => actions.read_example(),
 		},
 		{
 			key: 'r',
@@ -91,6 +91,15 @@ function mount_toolbar(actions: {
 			return
 
 		const key = evt.key.toLowerCase()
+		if (key === 'e' && evt.shiftKey) {
+			evt.preventDefault()
+			actions.read_example({ use_configured_rate: true })
+			return
+		}
+
+		if (evt.shiftKey)
+			return
+
 		const btn = buttons.get(key)
 		if (!btn || btn.disabled)
 			return
